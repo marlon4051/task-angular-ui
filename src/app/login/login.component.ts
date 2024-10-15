@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
@@ -10,11 +10,18 @@ import { User } from '../models/user.model';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
   public email = '';
   public password = '';
 
   constructor(private _router: Router, private _authService: AuthService, private _modalService: BsModalService) {}
+
+  ngOnInit(): void {
+    const token = this._authService.getToken();
+    if (token) {
+      this._router.navigate(['/tasks']);
+    }
+  }
 
   public async login() {
     await this._authService.login(this.email, this.password)
