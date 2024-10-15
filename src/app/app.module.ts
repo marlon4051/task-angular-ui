@@ -13,6 +13,9 @@ import { EditTaskModalComponent } from './task-manager/edit-task-modal/edit-task
 import { NewUserModalComponent } from './new-user-modal/new-user-modal.component';
 import { TaskState } from './store/task.state';
 import { NgxsModule } from '@ngxs/store';
+import { CookieService } from 'ngx-cookie-service';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { TokenInterceptor } from './interceptors/token.interceptor';
 
 @NgModule({
   declarations: [
@@ -21,7 +24,7 @@ import { NgxsModule } from '@ngxs/store';
     TaskManagerComponent,
     CreateTaskModalComponent,
     EditTaskModalComponent,
-    NewUserModalComponent
+    NewUserModalComponent,
   ],
   imports: [
     BrowserModule,
@@ -29,9 +32,16 @@ import { NgxsModule } from '@ngxs/store';
     BrowserAnimationsModule,
     FormsModule,
     ModalModule.forRoot(),
-    NgxsModule.forRoot([TaskState]) 
+    NgxsModule.forRoot([TaskState]),
   ],
-  providers: [],
-  bootstrap: [AppComponent]
+  providers: [
+    CookieService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptor,
+      multi: true,
+    },
+  ],
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

@@ -5,6 +5,7 @@ import { CreateTaskModalComponent } from './create-task-modal/create-task-modal.
 import { EditTaskModalComponent } from './edit-task-modal/edit-task-modal.component';
 import { Store } from '@ngxs/store';
 import { AddTask, DeleteTask, UpdateTask } from '../store/task.state';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-task-manager',
@@ -15,7 +16,8 @@ export class TaskManagerComponent {
   public tasks!: Task[];
   public bsModalRef!: BsModalRef;
   public lastId = 1;
-  constructor(private _modalService: BsModalService, private store: Store) {
+  public userName!: string;
+  constructor(private _modalService: BsModalService, private store: Store, private _authService: AuthService ) {
     this.store
       .select((state) => state.tasks.tasks)
       .subscribe((tasks: Task[]) => {
@@ -24,6 +26,11 @@ export class TaskManagerComponent {
           this.lastId = tasks[tasks.length - 1].id + 1;
         }
       });
+    this.userName = this._authService.getUserName();
+  }
+
+  public logout() {
+    this._authService.logout();
   }
 
   public createTask() {

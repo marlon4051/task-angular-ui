@@ -1,14 +1,24 @@
 <div class="task-container">
-  <h1>
-    Welcome, <b>{{ "User Name" }}</b>
-  </h1>
+  <div class="row">
+    <div class="col">
+      <h1>
+        Welcome, <b>{{ userName }}</b>
+      </h1>
+    </div>
+    <div class="col">
+      <button type="button" class="btn btn-primary" (click)="logout()">
+        Logout
+      </button>
+    </div>
+    
+  </div>
   <br />
   <div class="row-manage">
     <div class="col">
       <h2>Tasks manager</h2>
     </div>
     <div class="col create-button">
-      <button type="button" class="btn btn-primary" (click)="createTask()">
+      <button type="button" class="btn btn-secondary" (click)="createTask()">
         Create New Task
       </button>
     </div>

@@ -19,6 +19,6 @@ export class NewUserModalComponent {
 
   register() {
     this.userRegistered.emit(this.newUser);
-    this.bsModalRef.hide(); // Cerrar el modal
+    this.bsModalRef.hide(); 
   }
 }
