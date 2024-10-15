@@ -1,0 +1,108 @@
+<div class="task-container">
+  <h1>
+    Welcome, <b>{{ "User Name" }}</b>
+  </h1>
+  <br />
+  <div class="row-manage">
+    <div class="col">
+      <h2>Tasks manager</h2>
+    </div>
+    <div class="col create-button">
+      <button type="button" class="btn btn-primary" (click)="createTask()">
+        Create New Task
+      </button>
+    </div>
+  </div>
+  <div class="task-row">
+    <div class="task-col">
+      <h4>Pending</h4>
+      <div class="task-list">
+        <div class="card-columns">
+          <ng-container *ngFor="let task of tasks">
+            <ng-container *ngIf="task.status === 'pending'">
+              <div class="card">
+                <div class="card-body">
+                  <div class="action-buttons">
+                    <button class="btn btn-light" (click)="editTask(task)">
+                      <i class="fas fa-pencil-alt"></i>
+                    </button>
+                    <button class="btn btn-danger" (click)="deleteTask(task)">
+                      <i class="fas fa-trash"></i>
+                    </button>
+                  </div>
+                  <h5 class="card-title task-title">{{ task.title }}</h5>
+                  <p class="card-text task-description">
+                    {{ task.description }}
+                  </p>
+                  <span class="badge bg-secondary task-status">{{
+                    task.status | titlecase
+                  }}</span>
+                </div>
+              </div>
+            </ng-container>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+    <div class="task-col">
+      <h4>Working</h4>
+      <div class="task-list">
+        <div class="card-columns">
+          <ng-container *ngFor="let task of tasks">
+            <ng-container *ngIf="task.status === 'working'">
+              <div class="card">
+                <div class="card-body">
+                  <div class="action-buttons">
+                    <button class="btn btn-light" (click)="editTask(task)">
+                      <i class="fas fa-pencil-alt"></i>
+                    </button>
+                    <button class="btn btn-danger" (click)="deleteTask(task)">
+                      <i class="fas fa-trash"></i>
+                    </button>
+                  </div>
+                  <h5 class="card-title task-title">{{ task.title }}</h5>
+                  <p class="card-text task-description">
+                    {{ task.description }}
+                  </p>
+                  <span class="badge bg-info task-status">{{
+                    task.status | titlecase
+                  }}</span>
+                </div>
+              </div>
+            </ng-container>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+    <div class="task-col">
+      <h4>Completed</h4>
+      <div class="task-list">
+        <div class="card-columns">
+          <ng-container *ngFor="let task of tasks">
+            <ng-container *ngIf="task.status === 'completed'">
+              <div class="card">
+                <div class="card-body">
+                  <div class="action-buttons">
+                    <button class="btn btn-light" (click)="editTask(task)">
+                      <i class="fas fa-pencil-alt"></i>
+                    </button>
+                    <button class="btn btn-danger" (click)="deleteTask(task)">
+                      <i class="fas fa-trash"></i>
+                    </button>
+                  </div>
+                  <h5 class="card-title task-title">{{ task.title }}</h5>
+                  <p class="card-text task-description">
+                    {{ task.description }}
+                  </p>
+                  <span class="badge bg-success task-status">{{
+                    task.status | titlecase
+                  }}</span>
+                </div>
+              </div>
+            </ng-container>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

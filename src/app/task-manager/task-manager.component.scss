@@ -1,0 +1,123 @@
+.task-container {
+  padding: 20px;
+  height: calc(100vh - 95px);
+}
+
+.row-manage {
+  display: flex;
+  justify-content: space-between;
+
+  .create-button {
+    display: flex;
+    justify-content: flex-end;
+  }
+}
+
+.task-row {
+  display: flex;
+  flex-wrap: nowrap;
+  padding: 10px;
+  height: 100%;
+}
+
+.task-col {
+  flex: 1;
+  margin-right: 20px;
+  background-color: #f4f5f7;
+  border-radius: 8px;
+  padding: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  max-height: 100%;
+  height: 100%;
+}
+
+.task-col h4 {
+  background-color: #fff;
+  z-index: 10;
+  padding: 10px;
+  margin: 0;
+  border-bottom: 1px solid #ddd;
+  text-align: center;
+}
+
+.task-list {
+  flex-grow: 1;
+  overflow-y: auto;
+  padding: 10px;
+  overflow-y: auto;
+  height: 100%;
+}
+
+@media (max-width: 1024px) {
+  .task-row {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+  }
+
+  .task-col {
+    flex: 0 0 auto;
+    width: 300px;
+    margin-right: 10px;
+  }
+}
+
+h4 {
+  text-align: center;
+  color: #333;
+}
+
+.card {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  margin-bottom: 10px;
+  padding: 10px;
+  transition: box-shadow 0.2s;
+}
+
+.card:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.card-title {
+  font-size: 1.2em;
+  margin: 0;
+}
+
+.card-text {
+  font-size: 0.9em;
+  color: #555;
+}
+
+.badge {
+  margin-top: 10px;
+  display: block;
+  text-align: center;
+}
+
+.task-title {
+  font-weight: bold;
+  max-width: 280px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.task-description {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+}
+
+.action-buttons {
+  position: absolute; 
+  top: 10px;
+  right: 10px;
+  z-index: 1; 
+}
+
+.action-buttons .btn {
+  margin-right: 5px;
+}
