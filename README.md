@@ -56,7 +56,6 @@ By default, the application will be accessible at http://localhost:4200/.
 - Task Deletion
 - Task Status Management
 - User Authentication
-- User Creaation
 
 ## Built With
 - Angular
