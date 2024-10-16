@@ -46,7 +46,11 @@ export class TaskManagerComponent implements OnInit {
 
   public createTask() {
     const modalRef: BsModalRef = this._modalService.show(
-      CreateTaskModalComponent
+      CreateTaskModalComponent,
+      {
+        backdrop: 'static', // Prevent closing by clicking outside
+        keyboard: false, // Prevent closing by pressing the Escape key
+      }
     );
     modalRef.content.taskAdded.subscribe((newTask: Task) => {
       this.store.dispatch(new CreateTask(newTask)).subscribe(() => {
@@ -61,7 +65,11 @@ export class TaskManagerComponent implements OnInit {
     };
     const bsModalRef: BsModalRef = this._modalService.show(
       EditTaskModalComponent,
-      { initialState }
+      {
+        initialState,
+        backdrop: 'static', // Prevent closing by clicking outside
+        keyboard: false, // Prevent closing by pressing the Escape key
+      }
     );
 
     bsModalRef.content.taskUpdated.subscribe((updatedTask: Task) => {

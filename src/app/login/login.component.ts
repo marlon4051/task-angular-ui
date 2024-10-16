@@ -39,7 +39,11 @@ export class LoginComponent implements OnInit {
 
   public openRegisterModal() {
     const bsModalRef: BsModalRef = this._modalService.show(
-      NewUserModalComponent
+      NewUserModalComponent,
+      {
+        backdrop: 'static', // Prevent closing by clicking outside
+        keyboard: false, // Prevent closing by pressing the Escape key
+      }
     );
 
     bsModalRef.content.userRegistered.subscribe(async (newUser: User) => {
