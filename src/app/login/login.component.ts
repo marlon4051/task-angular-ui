@@ -43,7 +43,7 @@ export class LoginComponent implements OnInit {
     );
 
     bsModalRef.content.userRegistered.subscribe(async (newUser: User) => {
-      const response: any = await this._authService.register(
+      const response = await this._authService.register(
         newUser.userName,
         newUser.email,
         newUser.password
