@@ -1,27 +1,50 @@
+
 # TaskAngularUi
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.2.8.
+This is the frontend for the task management system built with Angular. It allows users to manage tasks by interacting with the backend API.
 
-## Development server
+## Prerequisites
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+Make sure you have the following installed before proceeding:
 
-## Code scaffolding
+- **Node.js v20.18.0** You can find here: [Node.js v20.18.0]( https://nodejs.org/en/download/package-manager).
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+You can verify your Node.js version with the following command:
 
-## Build
+```sh
+node -v
+```
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+## Getting Started
+Follow these steps to set up and run the project locally:
 
-## Running unit tests
+Clone the repository:
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+```sh
+git clone https://github.com/your-repo/angular-task-app.git
+```
+Navigate to the project directory:
+```sh
+cd angular-task-app
+```
+Install the required dependencies:
+```sh
+npm install
+```
 
-## Running end-to-end tests
+## Configure the backend:
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+After setting up the frontend, you need to clone and run the backend for the application. You can find the backend repository here:
 
-## Further help
+[Backend API - Task Management System](https://github.com/marlon4051/task-api)
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+Follow the instructions in the backend repository to set it up.
+
+## Run the Angular application:
+
+Once everything is installed, you can run the Angular development server:
+
+```sh
+npm start
+```
+By default, the application will be accessible at http://localhost:4200/.
