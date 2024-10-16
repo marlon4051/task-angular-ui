@@ -1,46 +1,58 @@
-<div class="modal-header title">
-  <h4 class="modal-title pull-left">Edit Task</h4>
-  <button
-    type="button"
-    class="close pull-right"
-    aria-label="Close"
-    (click)="bsModalRef.hide()"
-  >
-    <span aria-hidden="true">&times;</span>
-  </button>
-</div>
-<div class="modal-body">
-  <div class="form-group">
-    <label for="taskTitle">Title</label>
-    <input
-      type="text"
-      class="form-control"
-      id="taskTitle"
-      [(ngModel)]="task.title"
-    />
+<form [formGroup]="taskForm" (ngSubmit)="updateTask()">
+  <div class="modal-header title">
+    <h4 class="modal-title pull-left">Edit Task</h4>
+    <button
+      type="button"
+      class="close pull-right"
+      aria-label="Close"
+      (click)="bsModalRef.hide()"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
   </div>
-  <div class="form-group">
-    <label for="taskDescription">Description</label>
-    <textarea
-      class="form-control"
-      id="taskDescription"
-      [(ngModel)]="task.description"
-    ></textarea>
+
+  <div class="modal-body">
+    <div class="form-group">
+      <label for="taskTitle">Title</label>
+      <input
+        type="text"
+        class="form-control"
+        id="taskTitle"
+        formControlName="title"
+        [ngClass]="{ 'is-invalid': taskForm.get('title')?.invalid && taskForm.get('title')?.touched }"
+      />
+      <div *ngIf="taskForm.get('title')?.invalid && taskForm.get('title')?.touched" class="invalid-feedback">
+        <div *ngIf="taskForm.get('title')?.errors?.['required']">Title is required</div>
+        <div *ngIf="taskForm.get('title')?.errors?.['maxlength']">Title cannot exceed 100 characters</div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="taskDescription">Description</label>
+      <textarea
+        class="form-control"
+        id="taskDescription"
+        formControlName="description"
+        [ngClass]="{ 'is-invalid': taskForm.get('description')?.invalid && taskForm.get('description')?.touched }"
+      ></textarea>
+      <div *ngIf="taskForm.get('description')?.invalid && taskForm.get('description')?.touched" class="invalid-feedback">
+        <div *ngIf="taskForm.get('description')?.errors?.['required']">Description is required</div>
+        <div *ngIf="taskForm.get('description')?.errors?.['minlength']">Description must be at least 5 characters</div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="taskStatus">Status</label>
+      <select class="form-control" id="taskStatus" formControlName="status">
+        <option *ngFor="let status of statuses" [value]="status">
+          {{ status }}
+        </option>
+      </select>
+    </div>
   </div>
-  <div class="form-group">
-    <label for="taskStatus">Status</label>
-    <select class="form-control" id="taskStatus" [(ngModel)]="task.status">
-      <option *ngFor="let status of statuses" [value]="status">
-        {{ status }}
-      </option>
-    </select>
+
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="bsModalRef.hide()">Cancel</button>
+    <button type="submit" class="btn btn-primary" [disabled]="taskForm.invalid">Save Changes</button>
   </div>
-</div>
-<div class="modal-footer">
-  <button type="button" class="btn btn-secondary" (click)="bsModalRef.hide()">
-    Cancelar
-  </button>
-  <button type="button" class="btn btn-primary" (click)="updateTask()">
-    Guardar Cambios
-  </button>
-</div>
+</form>

@@ -1,29 +1,28 @@
 <div class="task-container">
-  <div class="row">
+  <div class="row-manage">
     <div class="col">
       <h1>
         Welcome, <b>{{ userName }}</b>
       </h1>
     </div>
-    <div class="col">
+    <div class="col action-button">
       <button type="button" class="btn btn-primary" (click)="logout()">
         Logout
       </button>
     </div>
-    
   </div>
   <br />
   <div class="row-manage">
     <div class="col">
       <h2>Tasks manager</h2>
     </div>
-    <div class="col create-button">
+    <div class="col action-button">
       <button type="button" class="btn btn-secondary" (click)="createTask()">
         Create New Task
       </button>
     </div>
   </div>
-  <div class="task-row">
+  <div *ngIf="tasks && tasks.length > 0" class="task-row">
     <div class="task-col">
       <h4>Pending</h4>
       <div class="task-list">

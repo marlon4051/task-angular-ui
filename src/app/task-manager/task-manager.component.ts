@@ -1,10 +1,15 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Task } from '../models/task.model';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { CreateTaskModalComponent } from './create-task-modal/create-task-modal.component';
 import { EditTaskModalComponent } from './edit-task-modal/edit-task-modal.component';
 import { Store } from '@ngxs/store';
-import { AddTask, DeleteTask, UpdateTask } from '../store/task.state';
+import {
+  CreateTask,
+  DeleteTask,
+  GetTasks,
+  UpdateTask,
+} from '../store/task.state';
 import { AuthService } from '../services/auth.service';
 
 @Component({
@@ -12,21 +17,27 @@ import { AuthService } from '../services/auth.service';
   templateUrl: './task-manager.component.html',
   styleUrl: './task-manager.component.scss',
 })
-export class TaskManagerComponent {
+export class TaskManagerComponent implements OnInit {
   public tasks!: Task[];
   public bsModalRef!: BsModalRef;
-  public lastId = 1;
   public userName!: string;
-  constructor(private _modalService: BsModalService, private store: Store, private _authService: AuthService ) {
-    this.store
-      .select((state) => state.tasks.tasks)
-      .subscribe((tasks: Task[]) => {
-        if (tasks.length > 0) {
-          this.tasks = tasks;
-          this.lastId = tasks[tasks.length - 1].id + 1;
-        }
-      });
+  constructor(
+    private _modalService: BsModalService,
+    private store: Store,
+    private _authService: AuthService
+  ) {
     this.userName = this._authService.getUserName();
+  }
+
+  public ngOnInit(): void {
+    this.loadTasks();
+  }
+
+  public loadTasks() {
+    this.store.dispatch(new GetTasks()).subscribe((result: any) => {
+      this.tasks = result.tasks.tasks;
+      console.log(result.tasks.tasks);
+    });
   }
 
   public logout() {
@@ -34,20 +45,17 @@ export class TaskManagerComponent {
   }
 
   public createTask() {
-    const initialState = {
-      lastId: this.lastId, // Clonamos la tarea para evitar mutaciones directas
-    };
     const modalRef: BsModalRef = this._modalService.show(
-      CreateTaskModalComponent,
-      { initialState }
+      CreateTaskModalComponent
     );
     modalRef.content.taskAdded.subscribe((newTask: Task) => {
-      this.store.dispatch(new AddTask(newTask));
-      this.lastId = this.lastId++;
+      this.store.dispatch(new CreateTask(newTask)).subscribe(() => {
+        this.loadTasks();
+      });
     });
   }
 
-  public editTask(task: any) {
+  public editTask(task: Task) {
     const initialState = {
       task: { ...task },
     };
@@ -57,15 +65,21 @@ export class TaskManagerComponent {
     );
 
     bsModalRef.content.taskUpdated.subscribe((updatedTask: Task) => {
-      this.store.dispatch(new UpdateTask(updatedTask));
+      this.store
+        .dispatch(new UpdateTask(updatedTask.id, updatedTask))
+        .subscribe(() => {
+          this.loadTasks();
+        });
     });
   }
 
-  public deleteTask(task: any) {
+  public deleteTask(task: Task) {
     const confirmDelete = confirm('Are you sure you want to delete this task?');
 
     if (confirmDelete) {
-      this.store.dispatch(new DeleteTask(task.id));
+      this.store.dispatch(new DeleteTask(task.id)).subscribe(() => {
+        this.loadTasks();
+      });
       console.log('Deleted task:', task);
     } else {
       console.log('Deletion canceled');

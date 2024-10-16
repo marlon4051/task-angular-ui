@@ -21,7 +21,6 @@
     "@angular/router": "^18.2.0",
     "@ngxs/devtools-plugin": "18.1.1",
     "@ngxs/store": "^18.1.1",
-    "axios": "^1.7.7",
     "bootstrap": "^5.3.3",
     "ngx-bootstrap": "^18.0.2",
     "ngx-cookie-service": "^18.0.0",

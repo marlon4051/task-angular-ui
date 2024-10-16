@@ -1,8 +1,8 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import axios from 'axios';
 import { CookieService } from 'ngx-cookie-service';
-
+import { firstValueFrom } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -11,52 +11,68 @@ export class AuthService {
   public isAuthenticated = false;
   private apiUrl = 'http://localhost:8080';
 
-  constructor(private _cookieService: CookieService, private _router: Router) {}
+  constructor(
+    private _cookieService: CookieService,
+    private _router: Router,
+    private http: HttpClient
+  ) {}
 
   public async login(email: string, password: string) {
-
     try {
-      const response = await axios.post(`${this.apiUrl}/login`, {
-        email,
-        password
-      }, {
-        headers: {
-          'Content-Type': 'application/json'
-        }
+      const response = await firstValueFrom(
+        this.http.request<any>('post', `${this.apiUrl}/login`, {
+          body: {
+            email,
+            password,
+          },
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
+      );
+
+      const token = response.token;
+      const userName = response.userName;
+      this._cookieService.set('token', token, {
+        expires: 1,
+        path: '/',
+        secure: true,
       });
-  
-      const token = response.data.token;
-      const userName = response.data.userName;
-      this._cookieService.set('token', token, { expires: 1, path: '/' });
-      this._cookieService.set('userName', userName, { expires: 1, path: '/' });
-  
+      this._cookieService.set('userName', userName, {
+        expires: 1,
+        path: '/',
+        secure: true,
+      });
+
       console.log('Success login', response.data);
       this.isAuthenticated = true;
       return response.data;
     } catch (error) {
       console.error('Failed to login');
       this.isAuthenticated = false;
-      throw error; 
+      return error;
     }
   }
 
-  public async register(username: string, email: string, password: string ) {
+  public async register(username: string, email: string, password: string) {
     try {
-      const response = await axios.post(`${this.apiUrl}/register`, {
-        username,
-        email,
-        password
-      }, {
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      });;
-      return response
-    }catch (error) {
+      const response = await firstValueFrom(
+        this.http.request<any>('post', `${this.apiUrl}/register`, {
+          body: {
+            username,
+            email,
+            password,
+          },
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
+      );
+      return response;
+    } catch (error) {
       console.error('Failed to register');
-      throw error; 
+      return error;
     }
-     
   }
 
   public getToken() {

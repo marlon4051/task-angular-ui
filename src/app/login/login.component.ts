@@ -14,7 +14,11 @@ export class LoginComponent implements OnInit {
   public email = '';
   public password = '';
 
-  constructor(private _router: Router, private _authService: AuthService, private _modalService: BsModalService) {}
+  constructor(
+    private _router: Router,
+    private _authService: AuthService,
+    private _modalService: BsModalService
+  ) {}
 
   ngOnInit(): void {
     const token = this._authService.getToken();
@@ -24,8 +28,8 @@ export class LoginComponent implements OnInit {
   }
 
   public async login() {
-    await this._authService.login(this.email, this.password)
-    
+    await this._authService.login(this.email, this.password);
+
     if (this._authService.isLoggedIn()) {
       this._router.navigate(['/tasks']);
     } else {
@@ -34,14 +38,20 @@ export class LoginComponent implements OnInit {
   }
 
   public openRegisterModal() {
-    const bsModalRef: BsModalRef = this._modalService.show(NewUserModalComponent);
-    
-    bsModalRef.content.userRegistered.subscribe(async(newUser: User) => {
-      const response = await this._authService.register(newUser.userName, newUser.email, newUser.password)
-      if(response) {
+    const bsModalRef: BsModalRef = this._modalService.show(
+      NewUserModalComponent
+    );
+
+    bsModalRef.content.userRegistered.subscribe(async (newUser: User) => {
+      const response: any = await this._authService.register(
+        newUser.userName,
+        newUser.email,
+        newUser.password
+      );
+      if (response.message == 'User registered successfully') {
         alert('Register Success');
       } else {
-        alert('Failed to create the user');
+        alert(`Failed to create the user, error: ${response.error}`);
       }
     });
   }

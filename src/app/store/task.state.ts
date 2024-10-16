@@ -1,87 +1,81 @@
 import { State, Action, StateContext, Selector } from '@ngxs/store';
 import { Task } from '../models/task.model';
+import { TaskService } from '../services/task.service';
+import { Injectable } from '@angular/core';
+import { firstValueFrom, tap } from 'rxjs';
 
-export class AddTask {
-  static readonly type = '[Task] Add';
+export class GetTasks {
+  static readonly type = '[Task] Get Tasks';
+}
+export class CreateTask {
+  static readonly type = '[Task] Create Task';
   constructor(public payload: Task) {}
 }
 
 export class UpdateTask {
-  static readonly type = '[Task] Update';
-  constructor(public payload: Task) {}
+  static readonly type = '[Task] Update Task';
+  constructor(public id: number, public payload: Task) {}
 }
 
 export class DeleteTask {
-  static readonly type = '[Task] Delete';
-  constructor(public payload: number) {} // Payload es el ID de la tarea a eliminar
+  static readonly type = '[Task] Delete Task';
+  constructor(public id: number) {}
 }
 
 export interface TaskStateModel {
   tasks: Task[];
 }
-
+@Injectable()
 @State<TaskStateModel>({
   name: 'tasks',
   defaults: {
-    tasks: [
-      {
-        id: 1,
-        title: 'Card 1',
-        description: 'This is the description for card 1.',
-        status: 'completed',
-      },
-      {
-        id: 2,
-        title: 'Card 3',
-        description: 'This is the description for card 3.',
-        status: 'working',
-      },
-      {
-        id: 3,
-        title: 'Card 4',
-        description: 'This is the description for card 1.',
-        status: 'completed',
-      },
-      {
-        id: 4,
-        title: 'Card 4',
-        description: 'This is the description for card 1.',
-        status: 'pending',
-      },
-    ],
+    tasks: [],
   },
 })
 export class TaskState {
+  constructor(private taskService: TaskService) {}
+
   @Selector()
   static getTasks(state: TaskStateModel) {
     return state.tasks;
   }
 
-  @Action(AddTask)
-  addTask(ctx: StateContext<TaskStateModel>, action: AddTask) {
-    const state = ctx.getState();
-    ctx.setState({
-      tasks: [...state.tasks, action.payload],
-    });
+  @Action(GetTasks)
+  getTasks(ctx: StateContext<TaskStateModel>) {
+    return this.taskService.getTasks().pipe(
+      tap((result) => {
+        ctx.setState({
+          ...ctx.getState(), 
+          tasks: result 
+        });
+      })
+    );
+  }
+
+  @Action(CreateTask)
+  async createTask(
+    { dispatch }: StateContext<TaskStateModel>,
+    { payload }: CreateTask
+  ) {
+    await firstValueFrom(this.taskService.createTask(payload));
+    dispatch(new GetTasks());
   }
 
   @Action(UpdateTask)
-  updateTask(ctx: StateContext<TaskStateModel>, action: UpdateTask) {
-    const state = ctx.getState();
-    const tasks = state.tasks.map((task) =>
-      task.id === action.payload.id ? action.payload : task
-    );
-    ctx.setState({
-      tasks,
-    });
+  async updateTask(
+    { dispatch }: StateContext<TaskStateModel>,
+    { id, payload }: UpdateTask
+  ) {
+    await firstValueFrom(this.taskService.updateTask(id, payload));
+    dispatch(new GetTasks());
   }
 
   @Action(DeleteTask)
-  deleteTask(ctx: StateContext<TaskStateModel>, action: DeleteTask) {
-    const state = ctx.getState();
-    const tasks = state.tasks.filter((task) => task.id !== action.payload);
-    ctx.setState({
-      tasks,
-    });
+  async deleteTask(
+    { dispatch }: StateContext<TaskStateModel>,
+    { id }: DeleteTask
+  ) {
+    await firstValueFrom(this.taskService.deleteTask(id));
+    dispatch(new GetTasks());
   }
 }

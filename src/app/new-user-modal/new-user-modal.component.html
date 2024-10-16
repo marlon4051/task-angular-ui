@@ -1,48 +1,71 @@
-<div class="modal-header title">
-  <h4 class="modal-title pull-left">Create New User</h4>
-  <button
-    type="button"
-    class="close pull-right"
-    aria-label="Close"
-    (click)="bsModalRef.hide()"
-  >
-    <span aria-hidden="true">&times;</span>
-  </button>
-</div>
-<div class="modal-body">
-  <div class="form-group">
-    <label for="username">User Name</label>
-    <input
-      type="text"
-      class="form-control"
-      id="username"
-      [(ngModel)]="newUser.userName"
-    />
+<form [formGroup]="userForm" (ngSubmit)="register()">
+  <div class="modal-header title">
+    <h4 class="modal-title pull-left">Create New User</h4>
+    <button
+      type="button"
+      class="close pull-right"
+      aria-label="Close"
+      (click)="bsModalRef.hide()"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
   </div>
-  <div class="form-group">
-    <label for="email">Email Address</label>
-    <input
-      type="email"
-      class="form-control"
-      id="email"
-      [(ngModel)]="newUser.email"
-    />
+
+  <div class="modal-body">
+    <div class="form-group">
+      <label for="username">User Name</label>
+      <input
+        type="text"
+        class="form-control"
+        id="username"
+        formControlName="userName"
+        [ngClass]="{
+          'is-invalid': userForm.get('userName')?.invalid && userForm.get('userName')?.touched
+        }"
+      />
+      <div *ngIf="userForm.get('userName')?.invalid && userForm.get('userName')?.touched" class="invalid-feedback">
+        <div *ngIf="userForm.get('userName')?.errors?.['required']">User Name is required</div>
+        <div *ngIf="userForm.get('userName')?.errors?.['minlength']">User Name must be at least 3 characters</div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="email">Email Address</label>
+      <input
+        type="email"
+        class="form-control"
+        id="email"
+        formControlName="email"
+        [ngClass]="{
+          'is-invalid': userForm.get('email')?.invalid && userForm.get('email')?.touched
+        }"
+      />
+      <div *ngIf="userForm.get('email')?.invalid && userForm.get('email')?.touched" class="invalid-feedback">
+        <div *ngIf="userForm.get('email')?.errors?.['required']">Email is required</div>
+        <div *ngIf="userForm.get('email')?.errors?.['email']">Invalid email format</div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="password">Password</label>
+      <input
+        type="password"
+        class="form-control"
+        id="password"
+        formControlName="password"
+        [ngClass]="{
+          'is-invalid': userForm.get('password')?.invalid && userForm.get('password')?.touched
+        }"
+      />
+      <div *ngIf="userForm.get('password')?.invalid && userForm.get('password')?.touched" class="invalid-feedback">
+        <div *ngIf="userForm.get('password')?.errors?.['required']">Password is required</div>
+        <div *ngIf="userForm.get('password')?.errors?.['minlength']">Password must be at least 6 characters</div>
+      </div>
+    </div>
   </div>
-  <div class="form-group">
-    <label for="password">Password</label>
-    <input
-      type="password"
-      class="form-control"
-      id="password"
-      [(ngModel)]="newUser.password"
-    />
+
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="bsModalRef.hide()">Cancel</button>
+    <button type="submit" class="btn btn-primary" [disabled]="userForm.invalid">Register</button>
   </div>
-</div>
-<div class="modal-footer">
-  <button type="button" class="btn btn-secondary" (click)="bsModalRef.hide()">
-    Cancel
-  </button>
-  <button type="button" class="btn btn-primary" (click)="register()">
-    Register
-  </button>
-</div>
+</form>
