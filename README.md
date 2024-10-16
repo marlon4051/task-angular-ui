@@ -48,3 +48,19 @@ Once everything is installed, you can run the Angular development server:
 npm start
 ```
 By default, the application will be accessible at http://localhost:4200/.
+
+## Features
+- User Registration
+- Task Creation
+- Task Editing
+- Task Deletion
+- Task Status Management
+- User Authentication
+- User Creaation
+
+## Built With
+- Angular
+= TypeScript
+- Bootstrap
+- RxJS
+- NGXS for state management
