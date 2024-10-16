@@ -21,11 +21,11 @@ Follow these steps to set up and run the project locally:
 Clone the repository:
 
 ```sh
-git clone https://github.com/your-repo/angular-task-app.git
+git clone https://github.com/marlon4051/task-angular-ui
 ```
 Navigate to the project directory:
 ```sh
-cd angular-task-app
+cd task-angular-api
 ```
 Install the required dependencies:
 ```sh
